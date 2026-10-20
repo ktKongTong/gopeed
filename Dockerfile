@@ -1,10 +1,12 @@
-FROM golang:1.25.4-alpine3.22 AS go
+FROM --platform=$BUILDPLATFORM golang:1.25.4-alpine3.22 AS go
+ARG TARGETOS
+ARG TARGETARCH
 WORKDIR /app
 COPY ./go.mod ./go.sum ./
 RUN go mod download
 COPY . .
 ARG VERSION=dev
-RUN CGO_ENABLED=0 go build -tags nosqlite,web \
+RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -tags nosqlite,web \
       -ldflags="-s -w -X github.com/GopeedLab/gopeed/pkg/base.Version=$VERSION -X github.com/GopeedLab/gopeed/pkg/base.InDocker=true" \
       -o dist/gopeed github.com/GopeedLab/gopeed/cmd/web
 
