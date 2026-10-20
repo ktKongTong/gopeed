@@ -48,7 +48,7 @@ jobs:
 
       - name: Bundle web UI for Go embed
         run: |
-          dart .github/workflows/scripts/flutter_local_font.dart
+          dart ../../.github/workflows/scripts/flutter_local_font.dart
         working-directory: ui/flutter
 
       - name: Copy web UI into Go build context
